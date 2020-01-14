@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean:beans xmlns="http://www.springframework.org/schema/batch"
+            xmlns:bean="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+
+
+
+
+
+
+    http://www.springframework.org/schema/batch 
+    http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+    <bean:import resource="classpath:ch06/job-context.xml"/>
+
+    <job id="customItemReadJob">
+        <step id="customItemReadStep">
+            <tasklet transaction-manager="transactionManager">
+                <chunk reader="customItemRead" processor="creditBillProcessor" writer="creditItemWriter"
+                       commit-interval="2">
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+
+    <job id="restartableCustomItemReadJob">
+        <step id="restartableCustomItemReadStep">
+            <tasklet transaction-manager="transactionManager">
+                <chunk reader="restartableCustomItemRead" processor="creditBillProcessor" writer="creditItemWriter"
+                       commit-interval="2">
+                </chunk>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean:bean id="customItemRead"
+               class="com.juxtapose.example.ch06.cust.itemreader.CustomCreditBillItemReader">
+    </bean:bean>
+
+    <bean:bean id="restartableCustomItemRead"
+               class="com.juxtapose.example.ch06.cust.itemreader.RestartableCustomCreditBillItemReader">
+    </bean:bean>
+
+    <bean:bean id="creditBillProcessor" scope="step"
+               class="com.juxtapose.example.ch06.CreditBillProcessor">
+    </bean:bean>
+
+    <bean:bean id="creditItemWriter"
+               class="com.juxtapose.example.ch06.DummyCreditItemWriter"/>
+
+</bean:beans>

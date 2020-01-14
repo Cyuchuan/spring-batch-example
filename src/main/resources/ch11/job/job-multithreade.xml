@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean:beans xmlns="http://www.springframework.org/schema/batch"
+            xmlns:bean="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+
+
+
+
+
+
+    http://www.springframework.org/schema/batch 
+    http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+    <bean:import resource="classpath:ch11/job-context.xml"/>
+
+    <job id="multiThreadJob">
+        <step id="multiThreadStep">
+            <tasklet task-executor="taskExecutor" throttle-limit="6">
+                <chunk reader="reader" writer="writer" commit-interval="2"/>
+            </tasklet>
+        </step>
+    </job>
+
+    <bean:bean id="taskExecutor"
+               class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <bean:property name="corePoolSize" value="5"/>
+        <bean:property name="maxPoolSize" value="15"/>
+    </bean:bean>
+
+    <bean:bean id="reader" class="com.juxtapose.example.ch11.multithread.AutoReader"/>
+    <bean:bean id="writer" class="com.juxtapose.example.ch11.multithread.ConsoleWriter"/>
+</bean:beans>
