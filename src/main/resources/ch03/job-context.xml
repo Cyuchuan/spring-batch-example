@@ -2,16 +2,20 @@
 <bean:beans xmlns="http://www.springframework.org/schema/batch"
             xmlns:bean="http://www.springframework.org/schema/beans"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:context="http://www.springframework.org/schema/context"
             xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 
 
 
 
-
-
-    http://www.springframework.org/schema/batch 
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/batch
     http://www.springframework.org/schema/batch/spring-batch-2.2.xsd">
+
+    <context:property-placeholder location="classpath:/ch03/properties/batch-mysql.properties"/>
+
 
     <!-- 作业仓库 -->
     <job-repository id="jobRepository" data-source="dataSource"
@@ -33,12 +37,12 @@
     <!-- 数据源 -->
     <bean:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <bean:property name="driverClassName">
-            <bean:value>com.mysql.jdbc.Driver</bean:value>
+            <bean:value>com.mysql.cj.jdbc.Driver</bean:value>
         </bean:property>
         <bean:property name="url">
-            <bean:value>jdbc:mysql://127.0.0.1:3306/test1289</bean:value>
+            <bean:value>${datasource.url}</bean:value>
         </bean:property>
         <bean:property name="username" value="root"></bean:property>
-        <bean:property name="password" value="000000"></bean:property>
+        <bean:property name="password" value="5505172"></bean:property>
     </bean:bean>
 </bean:beans>
